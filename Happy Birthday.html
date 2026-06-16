@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Všetko najlepšie</title>
+    <style>
+        /* Import elegantného, tajomného písma (serif) */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #121212; /* Temný, záhadný podklad */
+            color: #e0e0e0;
+            font-family: 'Playfair Display', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Jemné trblietavé hviezdy na pozadí */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            opacity: 0.25;
+            z-index: 1;
+            animation: starsTwinkle 8s infinite linear;
+        }
+
+        @keyframes starsTwinkle {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+            100% { opacity: 0.2; }
+        }
+
+        /* Kontajner pre celý obsah */
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            padding: 20px;
+        }
+
+        /* Nadpis v štýle starého Hollywoodu / Vogue */
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.3rem;
+            letter-spacing: 4px;
+            color: #d4d4d4;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* Magická krabička na fotku a prianie */
+        .card-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 4; /* Elegantný portrétový formát */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            margin-bottom: 30px;
+            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+
+        /* Samotná fotka */
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        /* Skrytý text s prianím, ktorý čaká za fotkou */
+        .message-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            pointer-events: none; /* Aby neprekážal klikaniu, kým je skrytý */
+            color: #f0f0f0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+        }
+
+        .message-overlay h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 5px;
+        }
+
+        .message-overlay p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Tlačidlo (Dior / Vintage minimalizmus) */
+        .trigger-btn {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            padding: 12px 35px;
+            background: transparent;
+            color: #c8c8c8;
+            border: 1px solid #c8c8c8;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .trigger-btn:hover {
+            color: #fff;
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        /* SKRYTÝ CSS TRIK: Checkbox, ktorý ovláda kliknutie bez JS */
+        #toggle-trigger {
+            display: none;
+        }
+
+        /* KEĎ JE KLIKNUTÉ (Checkbox je zaškrtnutý): */
+        /* 1. Rozmaž a stmav fotku, jemne ju priblíž */
+        #toggle-trigger:checked ~ .wrapper .photo {
+            filter: grayscale(70%) blur(12px) brightness(40%);
+            transform: scale(1.05);
+        }
+
+        /* 2. Zobraz text priania */
+        #toggle-trigger:checked ~ .wrapper .message-overlay {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        /* 3. Zmeň text alebo dizajn tlačidla po kliknutí (voliteľné) */
+        #toggle-trigger:checked ~ .wrapper .trigger-btn {
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="toggle-trigger">
+
+    <div class="wrapper">
+        
+        <h1>Happy Birthday ☆</h1>
+
+        <div class="card-container">
+            <img src="fotka.jpg" alt="Preco sa kurva nenacitala zas ta fotka co tu mala byt" class="photo">
+            
+            <div class="message-overlay">
+                <h2>Becculik</h2>
+                <p>Všetko najlepšieeee♡ Prajem ti aby si aj ďalší rok mala toľko úspešných ponúk, lásky a zážitkov ako tento. Opäť stárneme a shits getting real, ale svet je aj krásny, tak si ho uži v tom najlepšom svetle.</p>
+            </div>
+        </div>
+
+        <label for="toggle-trigger" class="trigger-btn">KLIK</label>
+
+    </div>
+
+</body>
+</html>
